@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>C Programming MCQ Chatbot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #eef;
+      padding: 20px;
+    }
+
+    #chat {
+      max-width: 600px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .bot, .user {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .bot {
+      background: #d9fdd3;
+    }
+
+    .user {
+      background: #f1f0f0;
+      text-align: right;
+    }
+
+    .options button {
+      margin: 5px;
+      padding: 5px 10px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .options button:hover {
+      background-color: #ddd;
+    }
+  </style>
+</head>
+<body>
+  <div id="chat">
+    <div class="bot" id="botMsg">Welcome to the C Programming Quiz! Click to begin.</div>
+    <div class="options">
+      <button onclick="startQuiz()">Start Quiz</button>
+    </div>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        question: "1. Which of the following is a valid C variable name?",
+        options: ["int", "float", "_var", "1var"],
+        answer: "_var"
+      },
+      {
+        question: "2. What is the size of int in C?",
+        options: ["2 bytes", "4 bytes", "8 bytes", "Depends on compiler"],
+        answer: "Depends on compiler"
+      },
+      {
+        question: "3. Which function is used to print in C?",
+        options: ["cin", "print()", "printf()", "println()"],
+        answer: "printf()"
+      },
+      {
+        question: "4. Which header file is used for input/output functions?",
+        options: ["conio.h", "stdio.h", "math.h", "string.h"],
+        answer: "stdio.h"
+      },
+      {
+        question: "5. What is the value of 5/2 in C?",
+        options: ["2", "2.5", "3", "2.0"],
+        answer: "2"
+      },
+      {
+        question: "6. Which symbol is used for a pointer?",
+        options: ["&", "*", "%", "#"],
+        answer: "*"
+      },
+      {
+        question: "7. What is the use of 'break' in C?",
+        options: ["Exit program", "Exit loop", "Continue loop", "End function"],
+        answer: "Exit loop"
+      },
+      {
+        question: "8. Which of the following is a loop in C?",
+        options: ["for", "if", "goto", "define"],
+        answer: "for"
+      },
+      {
+        question: "9. What is the correct syntax to declare a function?",
+        options: ["function int()", "int function()", "void = function", "func -> int()"],
+        answer: "int function()"
+      },
+      {
+        question: "10. Which keyword is used to define a constant?",
+        options: ["const", "define", "fixed", "static"],
+        answer: "const"
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function startQuiz() {
+      currentQuestion = 0;
+      score = 0;
+      document.getElementById("chat").innerHTML = '';
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const q = quizData[currentQuestion];
+      const botMsg = document.createElement("div");
+      botMsg.className = "bot";
+      botMsg.innerHTML = q.question;
+      document.getElementById("chat").appendChild(botMsg);
+
+      const optionsDiv = document.createElement("div");
+      optionsDiv.className = "options";
+
+      q.options.forEach(option => {
+        const btn = document.createElement("button");
+        btn.textContent = option;
+        btn.onclick = () => checkAnswer(option);
+        optionsDiv.appendChild(btn);
+      });
+
+      document.getElementById("chat").appendChild(optionsDiv);
+    }
+
+    function checkAnswer(selected) {
+      const userMsg = document.createElement("div");
+      userMsg.className = "user";
+      userMsg.textContent = selected;
+      document.getElementById("chat").appendChild(userMsg);
+
+      const correct = quizData[currentQuestion].answer;
+      const botMsg = document.createElement("div");
+      botMsg.className = "bot";
+      botMsg.innerHTML = selected === correct
+        ? "✅ Correct!"
+        : `❌ Wrong! Correct answer: ${correct}`;
+      if (selected === correct) score++;
+      document.getElementById("chat").appendChild(botMsg);
+
+      currentQuestion++;
+      if (currentQuestion < quizData.length) {
+        setTimeout(showQuestion, 1000);
+      } else {
+        setTimeout(showResult, 1000);
+      }
+    }
+
+    function showResult() {
+      const result = document.createElement("div");
+      result.className = "bot";
+      result.innerHTML = `🎉 Quiz completed!<br>Your score: ${score} / ${quizData.length}`;
+      document.getElementById("chat").appendChild(result);
+    }
+  </script>
+</body>
+</html>
